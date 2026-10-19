@@ -12,6 +12,7 @@ https://docs.djangoproject.com/en/6.1/ref/settings/
 
 from pathlib import Path
 import os
+from decouple import config, Csv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -21,12 +22,19 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/6.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-3x0+r=om3qt6pl_ps#03k$=_=@0nn(2j_-0r1cnscpjhoug-h-'
+SECRET_KEY = config('SECRET_KEY', default='django-insecure-3x0+r=om3qt6pl_ps#03k$=_=@0nn(2j_-0r1cnscpjhoug-h-')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = config('DEBUG', default=False, cast=bool)
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = config('ALLOWED_HOSTS', default='127.0.0.1,localhost', cast=Csv())
+
+# Trust Railway's proxy so HTTPS redirect works correctly
+CSRF_TRUSTED_ORIGINS = config(
+    'CSRF_TRUSTED_ORIGINS',
+    default='http://127.0.0.1,http://localhost',
+    cast=Csv()
+)
 
 
 # Application definition
@@ -43,6 +51,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',          # serve static files in production
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -120,6 +129,10 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     BASE_DIR / 'static',
 ]
+STATIC_ROOT = BASE_DIR / 'staticfiles'
+
+# WhiteNoise: serve compressed static files with long-lived cache headers
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 
 # Email
@@ -135,7 +148,7 @@ MAILERS = {
 # ---- WheatGuard settings ----
 MEDIA_URL = '/media/'
 MEDIA_ROOT = BASE_DIR / 'media'
-WEIGHTS_DIR = BASE_DIR / 'weights'
+WEIGHTS_DIR = config('WEIGHTS_DIR', default=str(BASE_DIR / 'weights'))
 DATA_UPLOAD_MAX_MEMORY_SIZE = 10 * 1024 * 1024   # 10 MB
 CONFIDENCE_THRESHOLD = 0.5                        # detection score cut-off
-MODEL_MODE = 'convnext'                           # 'convnext' (best single) or 'ensemble'
+MODEL_MODE = config('MODEL_MODE', default='convnext')  # 'convnext' or 'ensemble'
