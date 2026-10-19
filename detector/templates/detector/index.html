@@ -1,0 +1,569 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>WheatGuard — AI Wheat Disease Detection & Crop Intelligence</title>
+  <meta name="description"
+    content="AI-powered diagnostic platform for early detection of wheat crop diseases including Wheat Blast, Leaf Blight, Fusarium Foot Rot, and Black Point.">
+
+  <!-- Google Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,500;0,700;0,900;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&family=Space+Mono:wght@400;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Particles.js CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/particles.js/2.0.0/particles.min.js"></script>
+
+  <!-- Master Stylesheet -->
+  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+  <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+</head>
+
+<body>
+
+  <!-- Hidden CSRF token for JavaScript fetch calls -->
+  <form id="csrf-form" style="display:none">
+    {% csrf_token %}
+  </form>
+
+  <!-- Custom Cursor -->
+  <div class="cursor" id="cursor"></div>
+  <div class="cursor-ring" id="cursor-ring"></div>
+
+  <!-- Particle Background -->
+  <div id="particles-js"></div>
+
+  <!-- ─── NAVIGATION ─────────────────────────────────── -->
+  <nav>
+    <div class="logo" onclick="showSection('home')">
+      Wheat<span>Guard</span>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="#home" onclick="return showSection('home')" id="nav-home" class="active">Home</a></li>
+      <li><a href="#about" onclick="return showSection('about')" id="nav-about">About</a></li>
+      <li><a href="#services" onclick="return showSection('services')" id="nav-services">Services</a></li>
+      <li><a href="#developers" onclick="return showSection('developers')" id="nav-developers">Developers</a></li>
+      <li><a href="#gallery" onclick="return showSection('gallery')" id="nav-gallery">Gallery</a></li>
+    </ul>
+
+    <button class="mobile-toggle" onclick="toggleMobileNav()" aria-label="Toggle navigation menu">
+      ☰
+    </button>
+  </nav>
+
+  <!-- ─── HOME (HERO) ────────────────────────────────── -->
+  <section id="home" class="active-section fade-in">
+    <div class="section-inner center-content">
+      <div class="home-badge">AI-Powered Agricultural Intelligence</div>
+
+      <h1 class="home-title">
+        <span class="block">Detect Wheat</span>
+        <span class="block gold">Diseases</span>
+        <span class="block">Instantly</span>
+      </h1>
+
+      <p class="home-subtitle">
+        Advanced deep learning system for rapid, early-stage identification of wheat crop
+        diseases — safeguarding yields and food security before infection spreads.
+      </p>
+
+      <div class="home-cta">
+        <button class="btn-primary" onclick="showSection('services')">Start Detection →</button>
+        <button class="btn-outline" onclick="showSection('about')">Learn More</button>
+      </div>
+
+      <div class="disease-tags">
+        <div class="dtag" onclick="quickTest('black_point')">⚫ Black Point</div>
+        <div class="dtag" onclick="quickTest('fusarium_foot_rot')">🌿 Fusarium Foot Rot</div>
+        <div class="dtag" onclick="quickTest('leaf_blight')">🍂 Leaf Blight</div>
+        <div class="dtag" onclick="quickTest('wheat_blast')">💥 Wheat Blast</div>
+        <div class="dtag" onclick="quickTest('healthy')">🌾 Healthy Crop</div>
+      </div>
+
+      <div class="home-grid">
+        <div class="hg-item">
+          <div class="hg-num">5</div>
+          <div class="hg-label">Conditions Classified</div>
+        </div>
+        <div class="hg-item">
+          <div class="hg-num">2</div>
+          <div class="hg-label">Diagnostic Modes</div>
+        </div>
+        <div class="hg-item">
+          <div class="hg-num">AI</div>
+          <div class="hg-label">ConvNeXt Backbone</div>
+        </div>
+        <div class="hg-item">
+          <div class="hg-num">5</div>
+          <div class="hg-label">Expert Developers</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── ABOUT ──────────────────────────────────────── -->
+  <section id="about" class="fade-in">
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-tag">// Our Mission</div>
+        <h2 class="section-title">Empowering Farmers<br>Through Neural Intelligence</h2>
+      </div>
+
+      <div class="about-grid">
+        <div class="about-left">
+          <p>
+            <strong>WheatGuard</strong> is an AI-driven agricultural diagnostic platform engineered to
+            address one of the most critical challenges facing wheat cultivation across South Asia
+            and global wheat belts — the early identification and targeted management of crop diseases that
+            silently devastate harvests each season.
+          </p>
+          <p>
+            Wheat is a cornerstone of food security for billions of people. Yet every year,
+            unchecked fungal infections, blights, and rots claim devastating portions of the
+            harvest — often because early microscopic signs go undetected until irreversible damage has occurred.
+            Our platform exists to change that reality.
+          </p>
+          <p>
+            By combining <strong>state-of-the-art ConvNeXt neural network architectures</strong> with an
+            intuitive field-ready interface, WheatGuard enables farmers, agronomists, and agricultural extension workers
+            to diagnose diseases like <strong>Black Point, Fusarium Foot Rot, Leaf Blight, and Wheat Blast</strong>
+            with a single photograph taken directly from the field.
+          </p>
+          <p>
+            Our mission is to democratize precision agriculture — delivering laboratory-grade crop diagnostics
+            to anyone with a phone or drone, protecting harvests and farmer livelihoods.
+          </p>
+        </div>
+
+        <div class="about-right">
+          <div class="about-card">
+            <h4>🌾 Early Detection</h4>
+            <p>Identify fungal pathogens at early incubation stages before widespread spore dispersal. Days saved in
+              diagnosis mean the difference between a bountiful harvest and total crop failure.</p>
+          </div>
+          <div class="about-card">
+            <h4>🤖 AI Diagnostics</h4>
+            <p>Our convolutional neural network is trained on extensively annotated regional wheat pathology datasets,
+              calibrated with 99%+ validation accuracy for high specificity.</p>
+          </div>
+          <div class="about-card">
+            <h4>🚁 Drone Integration</h4>
+            <p>WheatGuard supports multi-spectral drone video analysis — enabling automated field-scale canopy
+              surveillance, GPS-tagged infection mapping, and early hotspot detection.</p>
+          </div>
+          <div class="about-card">
+            <h4>📊 Actionable Insights</h4>
+            <p>Every scan delivers full probability distributions, pathogen taxonomy, severity assessments, and specific
+              chemical and cultural agronomic treatment recommendations.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── SERVICES ───────────────────────────────────── -->
+  <section id="services" class="fade-in">
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-tag">// Diagnostic Hub</div>
+        <h2 class="section-title">Choose Your<br>Analysis Method</h2>
+      </div>
+
+      <div class="services-grid">
+
+        <!-- Service 01 — Image Detection -->
+        <div class="service-card">
+          <div class="service-label">Service 01 — Close-up Image</div>
+          <h3>Detect from Image</h3>
+          <p>Upload a close-up photo of your wheat ear, stem, or leaf. Our trained ConvNeXt deep neural model will
+            analyze the cellular discoloration patterns and deliver an immediate diagnosis.</p>
+
+          <!-- Quick Test Samples Strip -->
+          <div class="quick-samples">
+            <div class="quick-samples-title">
+              <span>⚡ Quick Test With Verified Samples</span>
+            </div>
+            <div class="sample-chips-wrap">
+              <span class="sample-chip" onclick="quickTest('wheat_blast')">💥 Wheat Blast</span>
+              <span class="sample-chip" onclick="quickTest('leaf_blight')">🍂 Leaf Blight</span>
+              <span class="sample-chip" onclick="quickTest('fusarium_foot_rot')">🌿 Fusarium Rot</span>
+              <span class="sample-chip" onclick="quickTest('black_point')">⚫ Black Point</span>
+              <span class="sample-chip" onclick="quickTest('healthy')">🌾 Healthy Leaf</span>
+            </div>
+          </div>
+
+          <!-- Drag and Drop Upload Zone -->
+          <div class="upload-zone" id="img-upload-zone" onclick="document.getElementById('img-input').click()">
+            <input type="file" id="img-input" accept="image/jpeg,image/png" onchange="handleImageUpload(event)">
+            <div class="uz-icon">📷</div>
+            <div class="uz-text">Drag & drop your wheat crop photo here<br>or click to browse files (JPG, PNG)</div>
+            <button type="button" class="uz-btn"
+              onclick="event.stopPropagation(); document.getElementById('img-input').click()">
+              Select Photo
+            </button>
+          </div>
+
+          <!-- Image Preview -->
+          <div class="img-preview" id="img-preview">
+            <img id="preview-img" src="" alt="Selected Wheat Preview">
+            <button type="button" class="remove-img" onclick="removeImage()" title="Remove image">✕</button>
+          </div>
+
+          <!-- Loading Progress & Status -->
+          <div class="loading-bar" id="loading-bar"></div>
+          <div class="loading-status-text" id="loading-status-text">Analyzing image features...</div>
+
+          <button type="button" class="analyze-btn" id="analyze-btn" onclick="analyzeImage()">Analyze Image with AI
+            →</button>
+
+          <!-- Result Card -->
+          <div
+            class="result-box {% if top_prediction %}show {% if top_prediction.type == 'healthy' %}healthy{% else %}disease{% endif %}{% endif %}"
+            id="result-box">
+            <div class="result-header-row">
+              <div class="result-label">Diagnosis Report</div>
+              <div class="result-severity-badge sev-{{ top_prediction.severity|default:'Moderate' }}"
+                id="result-sev-badge">
+                Severity: {{ top_prediction.severity|default:'—' }}
+              </div>
+            </div>
+
+            <div class="result-name-wrapper">
+              <div class="result-name" id="result-name">
+                {{ top_prediction.name|default:'—' }}
+              </div>
+              <div class="result-scientific" id="result-scientific">
+                {% if top_prediction.scientific_name %}({{ top_prediction.scientific_name }}){% endif %}
+              </div>
+            </div>
+
+            <div class="result-conf-row">
+              <div class="result-conf-label">Confidence Score</div>
+              <div class="result-conf-value" id="result-conf">{{ top_prediction.conf|default:'—' }}</div>
+            </div>
+
+            <div class="result-conf-meter">
+              <div class="result-conf-fill" id="result-conf-fill"></div>
+            </div>
+
+            <div class="result-desc" id="result-desc">
+              {{ top_prediction.desc|default:'—' }}
+            </div>
+
+            <!-- Clinical Symptoms -->
+            <div class="result-detail-box">
+              <div class="result-detail-title">Clinical Symptoms:</div>
+              <div class="result-detail-body" id="result-symptoms">
+                {{ top_prediction.symptoms|default:'Tissue irregularity and pigmentation observed.' }}
+              </div>
+            </div>
+
+            <!-- Treatment Recommendation -->
+            <div class="result-detail-box" style="border-left-color: #22c55e;">
+              <div class="result-detail-title" style="color: #22c55e;">Recommended Agronomic Treatment:</div>
+              <div class="result-detail-body" id="result-treatment">
+                {{ top_prediction.treatment|default:'Maintain scheduled irrigation and contact local extension officer.'
+                }}
+              </div>
+            </div>
+
+            <!-- Probability Breakdown for all classes -->
+            <div style="margin-top: 18px;">
+              <div class="all-preds-toggle">
+                <span>Class Probability Distribution</span>
+              </div>
+              <div class="all-preds-list" id="all-predictions-list"></div>
+            </div>
+
+            <!-- Object Detection (Faster R-CNN) if available -->
+            <div class="annotated-box-wrap" id="annotated-result-wrap" style="display: none;">
+              <div class="result-detail-title">Disease Region Localization:</div>
+              <img id="annotated-result-img" src="" alt="Annotated Bounding Box Result">
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-top: 20px;">
+              <button type="button" class="uz-btn" style="flex: 1;" onclick="exportDiagnosticReport()">🖨️ Export /
+                Print Report</button>
+              <button type="button" class="uz-btn"
+                style="background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.2); color: #ccc;"
+                onclick="removeImage()">Test Another Photo</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Service 02 — Drone Detection -->
+        <div class="service-card">
+          <div class="service-label">Service 02 — Aerial Surveillance</div>
+          <h3>Detect from Drone Video</h3>
+          <p>Upload aerial drone video footage for wide-scale crop health scouting. The AI scans video frames
+            sequentially, mapping disease distribution, GPS coordinates, and canopy stress hotspots.</p>
+
+          <div class="drone-zone" onclick="document.getElementById('video-input').click()">
+            <input type="file" id="video-input" accept="video/mp4,video/quicktime,video/x-msvideo"
+              onchange="handleVideoUpload(event)">
+            <div class="uz-icon">🎬</div>
+            <div class="uz-text">Upload drone mission footage<br>Supported Formats: MP4, MOV, AVI (Max 50 MB)</div>
+            <div class="drone-btn-wrap">
+              <button type="button" class="uz-btn"
+                onclick="event.stopPropagation(); document.getElementById('video-input').click()">
+                Select Drone Video
+              </button>
+            </div>
+          </div>
+
+          <div class="loading-bar" id="video-loading"></div>
+
+          <!-- Video / Drone Scan Result -->
+          <div class="result-box" id="video-result">
+            <div class="result-header-row">
+              <div class="result-label">Drone Aerial Scan Result</div>
+              <div class="result-severity-badge sev-High">Mission Complete</div>
+            </div>
+
+            <div class="result-name" id="video-result-name" style="color: #ef4444;">—</div>
+            <div class="result-desc" id="video-result-desc" style="margin-top: 8px;">—</div>
+
+            <div class="drone-telemetry-grid">
+              <div class="telemetry-item">
+                <div class="telemetry-label">Frames Evaluated</div>
+                <div class="telemetry-val" id="telemetry-frames">48 Frames</div>
+              </div>
+              <div class="telemetry-item">
+                <div class="telemetry-label">Canopy Infection Index</div>
+                <div class="telemetry-val" id="telemetry-spread">28.4% Area</div>
+              </div>
+              <div class="telemetry-item">
+                <div class="telemetry-label">GPS Location</div>
+                <div class="telemetry-val" id="telemetry-gps">23.4728° N, 91.1394° E</div>
+              </div>
+              <div class="telemetry-item">
+                <div class="telemetry-label">Surveyed Area</div>
+                <div class="telemetry-val" id="telemetry-area">4.2 Hectares</div>
+              </div>
+            </div>
+
+            <div style="margin-top: 14px;">
+              <div class="result-detail-title">Sector Risk Breakdown:</div>
+              <div class="drone-features-list" id="drone-sectors-list" style="margin-top: 8px;">
+                <div class="drone-feature-item"><strong>Sector North (N-1):</strong> Infected (34.2%)</div>
+                <div class="drone-feature-item"><strong>Sector East (E-2):</strong> Moderate Spotting (18.5%)</div>
+                <div class="drone-feature-item"><strong>Sector South (S-1):</strong> Healthy Canopy (4.1%)</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="drone-features">
+            <div class="drone-features-title">DRONE SCAN CAPABILITIES</div>
+            <div class="drone-features-list">
+              <div class="drone-feature-item">✓ Frame-by-frame aerial convolution analysis</div>
+              <div class="drone-feature-item">✓ Multi-spectral disease heatmap generation</div>
+              <div class="drone-feature-item">✓ Infection spread percentage & canopy loss index</div>
+              <div class="drone-feature-item">✓ GPS-referenced sector zone coordinates</div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── DEVELOPERS ─────────────────────────────────── -->
+  <section id="developers" class="fade-in">
+    <div class="section-inner">
+      <div class="section-header">
+        <div class="section-tag">// Engineering Team</div>
+        <h2 class="section-title">Meet the<br>Developers</h2>
+      </div>
+
+      <div class="devs-grid">
+
+        <!-- Dev 1: Saad Bin Kamal -->
+        <div class="dev-card">
+          <div class="dev-photo">
+            <img src="{% static 'images/team/saad.jpg' %}" alt="Saad Bin Kamal"
+              onerror="this.src='https://ui-avatars.com/api/?name=Saad+Bin+Kamal&background=d4a017&color=000&size=200'">
+          </div>
+          <div class="dev-name">Saad Bin Kamal</div>
+          <div class="dev-role">Advisor</div>
+          <div class="dev-designation">Lecturer, Dept of CSE<br>BAIUST</div>
+        </div>
+
+
+        <!-- Dev 2: MD. Saif Hasan Shafe -->
+        <div class="dev-card">
+          <div class="dev-photo">
+            <img src="{% static 'images/team/saif.jpg' %}" alt="MD. Saif Hasan Shafe"
+              onerror="this.src='https://ui-avatars.com/api/?name=Saif+Hasan+Shafe&background=22c55e&color=000&size=200'">
+          </div>
+          <div class="dev-name">MD. Saif Hasan Shafe</div>
+          <div class="dev-role">AI Model Trainer & Lead Developer</div>
+          <div class="dev-designation">Deep Learning Optimization<br>& Dataset Calibration</div>
+        </div>
+
+        <!-- Dev 3: Razaul Ibna Bari -->
+        <div class="dev-card">
+          <div class="dev-photo">
+            <img src="{% static 'images/team/razaul.jpg' %}" alt="Razaul Ibna Bari"
+              onerror="this.src='https://ui-avatars.com/api/?name=Razaul+Ibna+Bari&background=a855f7&color=fff&size=200'">
+          </div>
+          <div class="dev-name">Razaul Ibna Bari</div>
+          <div class="dev-role">UI/UX Designer & Frontend Developer</div>
+          <div class="dev-designation">Interface Design & User<br>Experience Research</div>
+        </div>
+
+        <!-- Dev 4: Md. Arafat Uddin Zaman -->
+
+        <div class="dev-card">
+          <div class="dev-photo">
+            <img src="{% static 'images/team/zyan.jpg' %}" alt="Md. Arafat Uddin Zaman"
+              onerror="this.src='https://ui-avatars.com/api/?name=Zyan+Alvi&background=ec4899&color=fff&size=200'">
+          </div>
+          <div class="dev-name">Md. Arafat Uddin Zaman</div>
+          <div class="dev-role">Operations & Outreach</div>
+          <div class="dev-designation">Community Lead & Project<br>Administration</div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── GALLERY ─────────────────────────────────────── -->
+  <section id="gallery" class="fade-in">
+    <div class="section-inner gallery-section-inner">
+      <div class="section-header">
+        <div class="section-tag">// Field Pathology Library</div>
+        <h2 class="section-title">Disease Reference Gallery</h2>
+        <p style="color: var(--text-secondary); margin-top: 10px; max-width: 600px;">
+          Explore verified field specimens of regional wheat diseases. Click <strong>"Test with this sample"</strong> to
+          immediately execute the deep neural model.
+        </p>
+      </div>
+
+      <div class="gallery-grid">
+
+        <!-- Card 1: Wheat Blast -->
+        <div class="gallery-card">
+          <div class="gallery-img-wrap">
+            <img src="{% static 'images/samples/wheat_blast.jpg' %}" alt="Wheat Blast Specimen">
+            <div class="gallery-badge" style="background: rgba(239, 68, 68, 0.85); color: #fff;">Critical Alert</div>
+          </div>
+          <div class="gallery-card-body">
+            <div class="gallery-card-title">Wheat Blast</div>
+            <div class="gallery-card-sci">Magnaporthe oryzae Triticum</div>
+            <div class="gallery-card-desc">
+              High-consequence fungal pathogen attacking the rachis, causing sudden bleaching of the entire wheat head
+              above infection point.
+            </div>
+            <button type="button" class="gallery-test-btn" onclick="quickTest('wheat_blast')">
+              ⚡ Test in AI Model
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 2: Leaf Blight -->
+        <div class="gallery-card">
+          <div class="gallery-img-wrap">
+            <img src="{% static 'images/samples/leaf_blight.jpg' %}" alt="Leaf Blight Specimen">
+            <div class="gallery-badge" style="background: rgba(132, 204, 22, 0.85); color: #000;">High Impact</div>
+          </div>
+          <div class="gallery-card-body">
+            <div class="gallery-card-title">Leaf Blight</div>
+            <div class="gallery-card-sci">Bipolaris sorokiniana</div>
+            <div class="gallery-card-desc">
+              Oval dark-brown necrotic lesions with yellow chlorotic halos that merge and burn off foliage, slashing
+              photosynthesis.
+            </div>
+            <button type="button" class="gallery-test-btn" onclick="quickTest('leaf_blight')">
+              ⚡ Test in AI Model
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 3: Fusarium Foot Rot -->
+        <div class="gallery-card">
+          <div class="gallery-img-wrap">
+            <img src="{% static 'images/samples/fusarium_foot_rot.jpg' %}" alt="Fusarium Foot Rot Specimen">
+            <div class="gallery-badge" style="background: rgba(249, 115, 22, 0.85); color: #fff;">High Risk</div>
+          </div>
+          <div class="gallery-card-body">
+            <div class="gallery-card-title">Fusarium Foot Rot</div>
+            <div class="gallery-card-sci">Fusarium culmorum</div>
+            <div class="gallery-card-desc">
+              Subcrown culm infection presenting as chocolate-brown staining on lower stem bases, premature tiller
+              death, and whiteheads.
+            </div>
+            <button type="button" class="gallery-test-btn" onclick="quickTest('fusarium_foot_rot')">
+              ⚡ Test in AI Model
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 4: Black Point -->
+        <div class="gallery-card">
+          <div class="gallery-img-wrap">
+            <img src="{% static 'images/samples/black_point.jpg' %}" alt="Black Point Specimen">
+            <div class="gallery-badge" style="background: rgba(212, 160, 23, 0.85); color: #000;">Moderate</div>
+          </div>
+          <div class="gallery-card-body">
+            <div class="gallery-card-title">Black Point</div>
+            <div class="gallery-card-sci">Alternaria alternata</div>
+            <div class="gallery-card-desc">
+              Grain kernel disease causing dark brown-black necrosis localized at the embryo tip, impairing germination
+              and flour quality.
+            </div>
+            <button type="button" class="gallery-test-btn" onclick="quickTest('black_point')">
+              ⚡ Test in AI Model
+            </button>
+          </div>
+        </div>
+
+        <!-- Card 5: Healthy Wheat -->
+        <div class="gallery-card">
+          <div class="gallery-img-wrap">
+            <img src="{% static 'images/samples/healthy_wheat.jpg' %}" alt="Healthy Wheat Crop">
+            <div class="gallery-badge" style="background: rgba(34, 197, 94, 0.85); color: #000;">Optimal Health</div>
+          </div>
+          <div class="gallery-card-body">
+            <div class="gallery-card-title">Healthy Wheat Crop</div>
+            <div class="gallery-card-sci">Triticum aestivum (Clean Canopy)</div>
+            <div class="gallery-card-desc">
+              Robust photosynthetic foliage and healthy spikes free from pathogenic mycelia, lesions, or necrosis.
+            </div>
+            <button type="button" class="gallery-test-btn" onclick="quickTest('healthy')">
+              ⚡ Test in AI Model
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ─── FOOTER ──────────────────────────────────────── -->
+  <footer>
+    <div class="f-logo">WheatGuard</div>
+    <div class="f-copy">© 2026 WheatGuard — AI Wheat Disease Intelligence System</div>
+    <div class="f-tags">
+      <span>Black Point</span>
+      <span>Fusarium</span>
+      <span>Leaf Blight</span>
+      <span>Wheat Blast</span>
+      <span>Healthy Crop</span>
+    </div>
+  </footer>
+
+  <!-- ─── JAVASCRIPT ASSETS ───────────────────────────── -->
+  <script src="{% static 'js/particles-config.js' %}"></script>
+  <script src="{% static 'js/cursor.js' %}"></script>
+  <script src="{% static 'js/navigation.js' %}"></script>
+  <script src="{% static 'js/detection.js' %}"></script>
+
+</body>
+
+</html>
